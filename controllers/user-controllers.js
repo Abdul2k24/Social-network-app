@@ -23,7 +23,7 @@ const userController = {
             res.status(500).json(err);
         }
     },
-        async createUser({ body }, res) {
+        async createUser( req, res) {
           try {
             const newUser = await User.create(req.body);
             res.status(200).json(newUser);
@@ -31,7 +31,7 @@ const userController = {
             res.status(500).json(err);
           }
         },
-        async updateUser({ req, res }, res) {
+        async updateUser( req, res) {
             try {
               const updatedUser = await User.findOneAndUpdate(
                 { _id: req.params.id },
@@ -42,10 +42,25 @@ const userController = {
                 res.status(404).json({ message: " User not found." });
                 return;
               }
-              res.status(200).json(this.updatedUser);
+              res.status(200).json(updatedUser);
+            } catch (err) {
+              res.status(500).json(err);
+            }
+          },
+          async deleteUser(req, res ) {
+            try {
+              const deletedUser = await User.findOneAndRemove({
+                     _id: req.params.id 
+              });
+              if (!deletedUser) {
+                return res.status(404).json({ message: 'user not found.' });
+              }
+              res.status(200).json(deletedUser);
             } catch (err) {
               res.status(500).json(err);
             }
           }
+
 };
 
+module.exports = userController;
