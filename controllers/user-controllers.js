@@ -59,8 +59,54 @@ const userController = {
             } catch (err) {
               res.status(500).json(err);
             }
+          },
+          async  addFriend(req, res) {
+            try {
+              const updatedUser = await User.findOneAndUpdate(
+                { 
+                    _id: params.id 
+                },
+                { $push: { friends: req.params.friendId } },
+                { new: true }
+              );
+              if (!updatedUser) {
+                res.status(404).json({ message: " User not found." });
+                return;
+              }
+              await User.findByIdAndUpdate(
+                { _id: req.params.friendId },
+                { $push: { friends: req.params.friendId } },
+                { new: true }
+              );
+              res.status(200).json(updatedUser);
+            } catch (err) {
+              res.status(500).json(err);
+            }
+          },
+          async  removeFriend(req, res) {
+            try {
+              const updatedUser = await User.findOneAndUpdate(
+                { 
+                    _id: params.id 
+                },
+                { $pull: { friends: req.params.friendId } },
+                { new: true }
+              );
+              if (!updatedUser) {
+                res.status(404).json({ message: " User not found." });
+                return;
+              }
+              await User.findByIdAndUpdate(
+                { _id: req.params.friendId },
+                { $pull: { friends: req.params.friendId } },
+                { new: true }
+              );
+              res.status(200).json(updatedUser);
+            } catch (err) {
+              res.status(500).json(err);
+            }
           }
-
+          
 };
 
 module.exports = userController;
