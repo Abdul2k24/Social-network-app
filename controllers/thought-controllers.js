@@ -50,5 +50,51 @@ const thoughtController = {
             } catch (err) {
               return res.status(500).json(err);
             }
-          }
+          },
+          async deleteThought(req, res) {
+            try {
+              const deletedThought = await Thought.findOneAndDelete({ 
+                _id: req.params.thoughtId 
+            });
+              if (!deletedThought) {
+                return res.status(404).json({ message: 'No Thought found.' });
+              }
+              res.status(200).json(deletedThought);
+            } catch (err) {
+              res.status(500).json(err);
+            }
+          },
+          async addReaction(req, res) {
+            try {
+              const updatedThought = await Thought.findOneAndUpdate(
+                { _id: req.params.thoughtId },
+                { $addToSet: { reactions: req.body }
+             },
+                { new: true }
+              );
+              if (!updatedThought) {
+                return res.status(404).json({ message: 'No Thought found' });
+              }
+              res.status(200).json(updatedThought);
+            } catch (err) {
+              res.status(500).json(err);
+            }
+        },
+        async deleteReaction(req, res) {
+            try {
+              const updatedThought = await Thought.findOneAndUpdate(
+                { _id: req.params.thoughtId },
+                { $pull: { reactions:{ reactionId: req.body.
+                    reactionId} },
+             },
+                { new: true }
+              );
+              if (!updatedThought) {
+                return res.status(404).json({ message: 'No Thought found' });
+              }
+              res.status(200).json(updatedThought);
+            } catch (err) {
+              res.status(500).json(err);
+            }
+        },
 };
