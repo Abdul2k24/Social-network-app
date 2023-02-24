@@ -15,7 +15,7 @@ This Social media API allows users to add friends, react, create and delete frie
  run: npm i and npm start
 
 ## Demo
-file:///Users/abdullahiabdulkadir/Downloads/Untitled_%20Feb%2023,%202023%207_18%20PM.webm
+https://drive.google.com/u/0/uc?id=1FEzn5UjsC_kbfbq0zns28-rzAR2LKM0M&export=download
 
 
 
